@@ -1,0 +1,32 @@
+#N canvas 573 122 847 581 10;
+#X obj 75 460 mrpeach/packOSC;
+#X msg 24 306 disconnect;
+#X obj -28 522 mrpeach/udpsend;
+#X text -96 5 Step 0: Run the following command to start the graphics
+;
+#X text 238 5 process:;
+#X text -24 68 Step 1: Connect to the UDP port created by that process
+;
+#X msg -24 86 connect 192.168.105.106 7000;
+#X text -77 20 ./SimpleGraphics;
+#X msg 332 189 send /sg/rect myrect 0 0 0.1 0.1 1 0 0 1;
+#X msg 332 245 send /sg/remove myrect;
+#X msg 332 273 send /sg/ellipse myellipse 0.1 -0.2 0.2 0.2 0 1 0 1
+;
+#X msg 332 303 send /sg/ellipse anotherellipse -0.1 0.2 0.3 0.08 1
+1 0.5 1;
+#X msg 333 216 send /sg/color myrect 1 0 1 1;
+#X text 332 151 Step 2: Send some drawing commands;
+#X msg 333 336 send /sg/image flare flare.png 0 0 0.1 0.1 0.5 1 0.5
+1;
+#X msg 331 369 send /sg/line myline -0.5 -0.2 0.3 0.08 1 1 1 1;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 6 0 2 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# restore terminal cursor
+echo -e '\e[?0c' > /dev/tty1
+

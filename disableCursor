@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# clear terminal cursor
+echo -e '\e[?17;0;0c' > /dev/tty1
+
