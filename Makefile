@@ -28,7 +28,7 @@ OBJECTS=$(OSC_OBJECTS) $(SG_OBJECTS)
 COMMON_INCLUDES = $(addprefix -I, $(PLAT_INC)) -Ilibst/include -I$(OSC_DIR)
 LINK += -Llibst/lib -lst -lfreetype -lpng -ljpeg
 
-$(OUTNAME) : $(OBJECTS) 
+$(OUTNAME) : $(OBJECTS) libst/lib/libst.a
 	$(PLAT_CPP) -o $(OUTNAME) $(OBJECTS) $(LINK) $(PLAT_LINK)
 
 $(SG_OBJECTS): %.o: %.cpp
@@ -36,6 +36,9 @@ $(SG_OBJECTS): %.o: %.cpp
 
 $(OSC_OBJECTS): %.o: %.cpp
 	make -C oscpack $(@:oscpack/%.o=%.o)
+
+libst/lib/libst.a: 
+	BEAGLEBOARD=1 make -C libst
 
 clean:
 	-rm -rf *.o $(OBJECTS) $(OUTNAME)

@@ -1,7 +1,10 @@
 
-LINK += -Llibst/lib -lst -lfreetype -lpng -ljpeg -lGLESv2 -lEGL -lm -lbcm_host -L/opt/vc/lib
+LINK += -Llibst/lib -lst -lfreetype -lpng -ljpeg -lGLESv2 -lEGL -lm -lbcm_host \
+-L/opt/vc/lib
 
-CXXFLAGS=-DBUILD_OGLES2 -Wall -DRELEASE -DKEYPAD_INPUT="\"/dev/input/event0\"" -I/Builds/OGLES2/Include -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include -Ilibst/include  -Ioscpack -DRASPBERRY_PI
+CXXFLAGS=-DBUILD_OGLES2 -Wall -DRELEASE -DKEYPAD_INPUT="\"/dev/input/event0\"" \
+-I/Builds/OGLES2/Include -I/opt/vc/include/interface/vcos/pthreads \
+-I/opt/vc/include -Ilibst/include  -Ioscpack -DRASPBERRY_PI
 
 ifneq ($(SG_DEBUG),)
 CXXFLAGS+=-g 
@@ -13,8 +16,9 @@ SRCNAME = SimpleGraphics
 OUTNAME = SimpleGraphics
 
 OSC_DIR=oscpack
-OSC_SRCS=osc/OscTypes.cpp osc/OscReceivedElements.cpp osc/OscPrintReceivedElements.cpp \
-ip/posix/NetworkingUtils.cpp ip/posix/UdpSocket.cpp
+OSC_SRCS=osc/OscTypes.cpp osc/OscReceivedElements.cpp \
+osc/OscPrintReceivedElements.cpp ip/posix/NetworkingUtils.cpp \
+ip/posix/UdpSocket.cpp
 OSC_SRCS:=$(addprefix $(OSC_DIR)/,$(OSC_SRCS))
 OSC_OBJECTS=$(addsuffix .o,$(basename $(OSC_SRCS)))
 
