@@ -21,20 +21,28 @@ include make_platform.mak
 SRCNAME = SimpleGraphics
 OUTNAME = SimpleGraphics
 
-OBJECTS = $(addsuffix .o,$(SRCNAME)) \
-../oscpack/osc/OscTypes.o ../oscpack/osc/OscReceivedElements.o \
-../oscpack/osc/OscPrintReceivedElements.o \
-../oscpack/ip/posix/NetworkingUtils.o ../oscpack/ip/posix/UdpSocket.o
+OSC_DIR=oscpack
+OSC_SRCS=osc/OscTypes.cpp osc/OscReceivedElements.cpp osc/OscPrintReceivedElements.cpp \
+ip/posix/NetworkingUtils.cpp ip/posix/UdpSocket.cpp
+OSC_SRCS:=$(addprefix $(OSC_DIR)/,$(OSC_SRCS))
+OSC_OBJECTS=$(addsuffix .o,$(basename $(OSC_SRCS)))
 
-COMMON_INCLUDES = $(addprefix -I, $(PLAT_INC)) -Ilibst/include
+SG_OBJECTS = $(addsuffix .o,$(SRCNAME))
+
+OBJECTS=$(OSC_OBJECTS) $(SG_OBJECTS)
+
+COMMON_INCLUDES = $(addprefix -I, $(PLAT_INC)) -Ilibst/include -I$(OSC_DIR)
 LINK += -Llibst/lib -lst -lfreetype -lpng -ljpeg
 
 $(OUTNAME) : $(OBJECTS) 
 	$(PLAT_CPP) -o $(OUTNAME) $(OBJECTS) $(LINK) $(PLAT_LINK)
 
-%.o: %.cpp
+$(SG_OBJECTS): %.o: %.cpp
 	$(PLAT_CC) $(PLAT_CFLAGS) -c $(COMMON_INCLUDES) $(INCLUDES) $^ -o $@
 
+$(OSC_OBJECTS): %.o: %.cpp
+	make -C oscpack $(@:oscpack/%.o=%.o)
+
 clean:
-	-rm -rf *.o $(OUTNAME)
+	-rm -rf *.o $(OBJECTS) $(OUTNAME)
 

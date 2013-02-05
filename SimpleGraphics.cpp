@@ -31,9 +31,9 @@
 #include "STTexture.h"
 #include "STImage.h"
 
-#include "../oscpack/osc/OscReceivedElements.h"
-#include "../oscpack/osc/OscPacketListener.h"
-#include "../oscpack/ip/UdpSocket.h"
+#include "osc/OscReceivedElements.h"
+#include "osc/OscPacketListener.h"
+#include "ip/UdpSocket.h"
 
 
 // Index to bind the attributes to vertex shaders
