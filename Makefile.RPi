@@ -1,0 +1,38 @@
+
+LINK += -Llibst/lib -lst -lfreetype -lpng -ljpeg -lGLESv2 -lEGL -lm -lbcm_host -L/opt/vc/lib
+
+CXXFLAGS=-DBUILD_OGLES2 -Wall -DRELEASE -DKEYPAD_INPUT="\"/dev/input/event0\"" -I/Builds/OGLES2/Include -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include -Ilibst/include  -Ioscpack -DRASPBERRY_PI
+
+ifneq ($(SG_DEBUG),)
+CXXFLAGS+=-g 
+else
+CXXFLAGS+=-O3
+endif
+
+SRCNAME = SimpleGraphics
+OUTNAME = SimpleGraphics
+
+OSC_DIR=oscpack
+OSC_SRCS=osc/OscTypes.cpp osc/OscReceivedElements.cpp osc/OscPrintReceivedElements.cpp \
+ip/posix/NetworkingUtils.cpp ip/posix/UdpSocket.cpp
+OSC_SRCS:=$(addprefix $(OSC_DIR)/,$(OSC_SRCS))
+OSC_OBJECTS=$(addsuffix .o,$(basename $(OSC_SRCS)))
+
+SG_OBJECTS = $(addsuffix .o,$(SRCNAME))
+
+OBJECTS=$(OSC_OBJECTS) $(SG_OBJECTS)
+
+$(OUTNAME) : $(OBJECTS) libst/lib/libst.a
+	g++ -o $(OUTNAME) $(OBJECTS) $(LINK)
+
+$(SG_OBJECTS): %.o: %.cpp
+	g++ $(CXXFLAGS) -c $^ -o $@
+
+$(OSC_OBJECTS): %.o: %.cpp
+	make -C oscpack $(@:oscpack/%.o=%.o)
+
+libst/lib/libst.a: 
+	RASPBERRY_PI=1 make -C libst
+
+clean:
+	-rm -rf *.o $(OBJECTS) $(OUTNAME)

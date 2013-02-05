@@ -1,22 +1,16 @@
-#
-# File			Makefile
-# Title			Makes the demo
-# Author		PowerVR
-#
-# Copyright		Copyright 2003-2004 by Imagination Technologies Limited.
-#
+# BeagleBoard makefile
 
 .PHONY: clean
 
-#SDKDIR  = ../../../../..
 SDKDIR = ~/advanced/GFX/GFX_Linux_SDK/OGLES2/SDKPackage
-VPATH = ../..
 
-#PLATFORM = LinuxOMAP3
-
-#include $(SDKDIR)/Builds/OGLES2/$(PLATFORM)/make_platform.mak
 include make_platform.mak
-#include oscpack/Makefile
+
+ifneq ($(SG_DEBUG),)
+CXXFLAGS+=-g 
+else
+CXXFLAGS+=-O3
+endif
 
 SRCNAME = SimpleGraphics
 OUTNAME = SimpleGraphics

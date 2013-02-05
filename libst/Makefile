@@ -10,7 +10,7 @@ LIBPREFIX	 := lib
 STATIC_LIBSUFFIX := .a
 SHARED_LIBSUFFIX := .so
 
-CFLAGS 		 := -g
+CFLAGS 		 := -O3
 LDFLAGS		 :=
 
 ###########################################################
@@ -20,14 +20,21 @@ LDFLAGS		 :=
 .PHONY : clean release mkdirs
 
 
-FILES 		 :=  STColor3f STColor4f STColor4ub STFont STImage STImage_jpeg STImage_png STImage_ppm STPoint2 STPoint3 STJoystick STShaderProgram STTexture STTimer STVector2 STVector3
+FILES 		 :=  STColor3f STColor4f STColor4ub STImage STImage_jpeg STImage_png STImage_ppm STPoint2 STPoint3 STJoystick STShaderProgram STTexture STTimer STVector2 STVector3
 INCDIRS          := . include 
 LIBDIRS          := 
 
+ifneq ($(RASPBERRY_PI),)
+# This is how we got the path for the EGL stuff on Raspberry Pi
+PLAT_INC = /opt/vc/include/interface/vcos/pthreads /opt/vc/include
+else
+# This is how we got the path for the EGL stuff on Beagle xM
 SDKDIR = ~/advanced/GFX/GFX_Linux_SDK/OGLES2/SDKPackage
 SDKDIR   := $(shell cd $(SDKDIR) && pwd)
 PLAT_INC  = $(SDKDIR)/Builds/OGLES2/Include \
 			$(SDKDIR)/Builds/OGLES2/$(PLATFORM)/Include
+endif
+
 INCDIRS += $(PLAT_INC)
 
 ARCH=$(shell uname | sed -e 's/-.*//g')
