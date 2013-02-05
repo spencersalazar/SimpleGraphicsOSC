@@ -13,4 +13,6 @@
 *.la
 *.a
 
+/SimpleGraphics
+
 .DS_Store
